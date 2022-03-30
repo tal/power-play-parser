@@ -134,6 +134,31 @@ describe('parsePowerPlays', () => {
         let pp1;
         let pp2;
         beforeEach(() => {
+            pp = parsePowerPlays(['10:00 p a 4', '09:00 p h 2']);
+            pp1 = pp.powerPlays[0];
+            pp2 = pp.powerPlays[1];
+        });
+        it('should have correct count', () => {
+            expect(pp.powerPlays.length).toBe(2);
+        });
+        it('should have correct duration', () => {
+            expect(pp1 === null || pp1 === void 0 ? void 0 : pp1.actualDurationInSeconds).toBe(60);
+        });
+        it('should have correct team', () => {
+            expect(pp1 === null || pp1 === void 0 ? void 0 : pp1.teamId).toBe(21);
+        });
+        it('should have correct duration', () => {
+            expect(pp2 === null || pp2 === void 0 ? void 0 : pp2.actualDurationInSeconds).toBe(60);
+        });
+        it('should have correct team', () => {
+            expect(pp2 === null || pp2 === void 0 ? void 0 : pp2.teamId).toBe(21);
+        });
+    });
+    describe('end of game', () => {
+        let pp;
+        let pp1;
+        let pp2;
+        beforeEach(() => {
             pp = parsePowerPlays([
                 // '10:10 g a',
                 // '10:00 g h',
