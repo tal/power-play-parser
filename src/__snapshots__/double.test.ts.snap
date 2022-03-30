@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Double should error no other value 1`] = `undefined`;
+
+exports[`Double should error on third value 1`] = `undefined`;

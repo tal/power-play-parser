@@ -1,0 +1,1 @@
+{"version":3,"file":"pp-parser.d.ts","sourceRoot":"","sources":["../src/pp-parser.ts"],"names":[],"mappings":"AACA,OAAO,EAAa,gBAAgB,EAAE,MAAM,aAAa,CAAA;AACzD,OAAO,EAAE,SAAS,EAAE,MAAM,cAAc,CAAA;AAGxC,oBAAY,qBAAqB,GAAG;IAClC,OAAO,CAAC,EAAE,CAAC,MAAM,EAAE,MAAM,CAAC,CAAA;CAC3B,CAAA;AAED,wBAAgB,eAAe,CAC7B,KAAK,EAAE,gBAAgB,EAAE,EACzB,MAAM,GAAE,qBAA0B;;EAkInC"}
