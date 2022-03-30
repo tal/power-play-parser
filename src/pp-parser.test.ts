@@ -6,6 +6,9 @@ function parsePowerPlays(templates: PlayTemplate[]) {
   return ogParsePowerPlays(plays, { teamIds: teamIds })
 }
 
+type Parse = ReturnType<typeof parsePowerPlays>
+type PP = Parse['powerPlays'][number]
+
 describe('parsePowerPlays', () => {
   it('should return empty', () => {
     const plays: any[] = []
@@ -70,7 +73,7 @@ describe('parsePowerPlays', () => {
   })
 
   describe('two offsetting pps', () => {
-    let pp: ReturnType<typeof parsePowerPlays>
+    let pp: Parse
     beforeEach(() => {
       pp = parsePowerPlays(['10:00 p a 2', '10:00 p h 2'])
     })
@@ -81,7 +84,7 @@ describe('parsePowerPlays', () => {
   })
 
   describe('two offsetting pps and a goal', () => {
-    let pp: ReturnType<typeof parsePowerPlays>
+    let pp: Parse
     beforeEach(() => {
       pp = parsePowerPlays(['10:00 p a 2', '10:00 p h 2', '09:30 g h'])
     })
@@ -116,13 +119,9 @@ describe('parsePowerPlays', () => {
   })
 
   describe('two offsetting pps then another pp', () => {
-    let pp: ReturnType<typeof parsePowerPlays>
-    let pp1:
-      | ReturnType<typeof parsePowerPlays>['powerPlays'][number]
-      | undefined
-    let pp2:
-      | ReturnType<typeof parsePowerPlays>['powerPlays'][number]
-      | undefined
+    let pp: Parse
+    let pp1: PP | undefined
+    let pp2: PP | undefined
     beforeEach(() => {
       pp = parsePowerPlays(['10:00 p a 2', '10:00 p h 2', '09:30 p h 2'])
       pp1 = pp.powerPlays[0]
@@ -139,13 +138,9 @@ describe('parsePowerPlays', () => {
   })
 
   describe('power plays across boundaries', () => {
-    let pp: ReturnType<typeof parsePowerPlays>
-    let pp1:
-      | ReturnType<typeof parsePowerPlays>['powerPlays'][number]
-      | undefined
-    let pp2:
-      | ReturnType<typeof parsePowerPlays>['powerPlays'][number]
-      | undefined
+    let pp: Parse
+    let pp1: PP | undefined
+    let pp2: PP | undefined
     beforeEach(() => {
       pp = parsePowerPlays(['01:00 p a 2', 'per', '19:59 g h'])
       pp1 = pp.powerPlays[0]
@@ -162,13 +157,39 @@ describe('parsePowerPlays', () => {
   })
 
   describe('end of game', () => {
-    let pp: ReturnType<typeof parsePowerPlays>
-    let pp1:
-      | ReturnType<typeof parsePowerPlays>['powerPlays'][number]
-      | undefined
-    let pp2:
-      | ReturnType<typeof parsePowerPlays>['powerPlays'][number]
-      | undefined
+    let pp: Parse
+    let pp1: PP | undefined
+    let pp2: PP | undefined
+    beforeEach(() => {
+      pp = parsePowerPlays(['10:00 p a 4', '09:00 p h 2'])
+      pp1 = pp.powerPlays[0]
+      pp2 = pp.powerPlays[1]
+    })
+
+    it('should have correct count', () => {
+      expect(pp.powerPlays.length).toBe(2)
+    })
+
+    it('should have correct duration', () => {
+      expect(pp1?.actualDurationInSeconds).toBe(60)
+    })
+
+    it('should have correct team', () => {
+      expect(pp1?.teamId).toBe(21)
+    })
+    it('should have correct duration', () => {
+      expect(pp2?.actualDurationInSeconds).toBe(60)
+    })
+
+    it('should have correct team', () => {
+      expect(pp2?.teamId).toBe(21)
+    })
+  })
+
+  describe('end of game', () => {
+    let pp: Parse
+    let pp1: PP | undefined
+    let pp2: PP | undefined
     beforeEach(() => {
       pp = parsePowerPlays([
         // '10:10 g a',
