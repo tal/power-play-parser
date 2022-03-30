@@ -118,6 +118,17 @@ describe('parsePowerPlays', () => {
     expect(pp.powerPlays[0].actualDurationInSeconds).toBe(120 + 1)
   })
 
+  it('5min with late goals', () => {
+    const pp = parsePowerPlays([
+      '10:00 p a 5',
+      '08:59 g h',
+      '07:59 g h',
+      '07:59 g h',
+    ])
+    expect(pp.powerPlays.length).toBe(1)
+    expect(pp.powerPlays[0].actualDurationInSeconds).toBe(5 * 60)
+  })
+
   describe('two offsetting pps then another pp', () => {
     let pp: Parse
     let pp1: PP | undefined
@@ -156,7 +167,7 @@ describe('parsePowerPlays', () => {
     })
   })
 
-  describe('end of game', () => {
+  describe('4min with 2min in middle', () => {
     let pp: Parse
     let pp1: PP | undefined
     let pp2: PP | undefined
@@ -183,6 +194,27 @@ describe('parsePowerPlays', () => {
 
     it('should have correct team', () => {
       expect(pp2?.teamId).toBe(21)
+    })
+  })
+
+  describe('crazy1', () => {
+    let pp: Parse
+    let pp1: PP | undefined
+    let pp2: PP | undefined
+    beforeEach(() => {
+      pp = parsePowerPlays([
+        '10:00 p a 4',
+        '09:00 p h 2',
+        '09:00 p a 2',
+        '08:31 g h',
+        '08:30 g a',
+      ])
+      pp1 = pp.powerPlays[0]
+      pp2 = pp.powerPlays[1]
+    })
+
+    it('should have correct count', () => {
+      expect(pp.powerPlays.length).toBe(1)
     })
   })
 
